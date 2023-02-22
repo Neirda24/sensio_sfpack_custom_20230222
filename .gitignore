@@ -8,3 +8,8 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/.coverage
+.phpunit.result.cache
+###< phpunit/phpunit ###
