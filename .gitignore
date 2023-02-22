@@ -11,5 +11,5 @@
 
 ###> phpunit/phpunit ###
 /.coverage
-.phpunit.result.cache
+/.phpunit.cache
 ###< phpunit/phpunit ###
