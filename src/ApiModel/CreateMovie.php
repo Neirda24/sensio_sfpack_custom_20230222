@@ -20,4 +20,9 @@ final class CreateMovie
      */
     #[Count(min: 1)]
     public array $genres;
+
+    public function getReleasedYear(): string
+    {
+        return $this->releasedAt->format('Y');
+    }
 }

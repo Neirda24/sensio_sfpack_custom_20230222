@@ -6,13 +6,22 @@ namespace App\Controller;
 
 use App\Form\ContactType;
 use App\Form\Model\Contact;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
-class ContactController extends AbstractController
+#[AsController]
+class ContactController
 {
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly Environment          $twig,
+    ) {
+    }
+
     #[Route(
         '/contact',
         name: 'app_contact',
@@ -22,15 +31,19 @@ class ContactController extends AbstractController
     {
         $contact = Contact::empty();
 
-        $contactForm = $this->createForm(ContactType::class, $contact);
+        $contactForm = $this->formFactory->create(ContactType::class, $contact);
         $contactForm->handleRequest($request);
 
-        if ($contactForm->isSubmitted() && $contactForm->isValid()) {
-            dump($contact);
+        $statusCode = Response::HTTP_OK;
+        if ($contactForm->isSubmitted()) {
+            $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+            if ($contactForm->isValid()) {
+                dd($contact);
+            }
         }
 
-        return $this->render('contact.html.twig', [
+        return new Response($this->twig->render('contact.html.twig', [
             'contact_form' => $contactForm->createView(),
-        ]);
+        ]), $statusCode);
     }
 }

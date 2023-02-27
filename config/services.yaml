@@ -16,8 +16,12 @@ services:
     App\:
         resource: '../src/'
         exclude:
+            - '../src/ApiModel/'
             - '../src/DependencyInjection/'
+            - '../src/DataFixtures/'
             - '../src/Entity/'
+            - '../src/Form/Model/'
+            - '../src/ReadModel/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
