@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\ReadModel\Rated;
 use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,6 +31,9 @@ class Movie
 
     #[ORM\ManyToMany(targetEntity: Genre::class)]
     private Collection $genres;
+
+    #[ORM\Column(length: 255, enumType: Rated::class)]
+    private ?Rated $rated = null;
 
     public function __construct()
     {
@@ -109,6 +113,18 @@ class Movie
     public function removeGenre(Genre $genre): self
     {
         $this->genres->removeElement($genre);
+
+        return $this;
+    }
+
+    public function getRated(): ?Rated
+    {
+        return $this->rated;
+    }
+
+    public function setRated(Rated $rated): self
+    {
+        $this->rated = $rated;
 
         return $this;
     }
